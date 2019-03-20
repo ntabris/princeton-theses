@@ -1,3 +1,4 @@
+import os
 import re
 import operator
 import json
@@ -7,11 +8,17 @@ import numpy as np
 
 def get_data(filename,url):
     j = ''
+    
+    try:
+        os.makedirs('data')
+    except:
+        pass
+    
     try:
         f = open('data/%s.json'%filename,'r')
         j = f.read()
         f.close()
-        print("Using saved data for %s." % filename)
+        print("Using saved %s." % filename)
     except:
         req = urllib.request.Request(url,headers={'Accept': 'application/json'})
         res = urllib.request.urlopen(req)
@@ -21,7 +28,7 @@ def get_data(filename,url):
         f = open('data/%s.json'%filename,'w')
         f.write(j)
         f.close()
-        print("Downloaded %s data and saved for future use." % filename)
+        print("Downloaded %s and saved for future use." % filename)
     return j
 
 def item_process(json_string,id=''):
